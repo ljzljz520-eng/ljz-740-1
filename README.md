@@ -67,11 +67,14 @@ done: noisy.wav -> clean.wav (s16, 48000 Hz, 2 ch, frame=480, native=vdnoise-ref
 make -C native linux      # gcc  -> native/lib/libvdnoise.so
 make -C native darwin     # clang -> native/lib/libvdnoise.dylib
 make -C native windows    # 需要 x86_64-w64-mingw32-gcc -> native/lib/vdnoise.dll
-make -C native all        # 三个目标
+make -C native all        # 构建所有已安装对应工具链的目标，其余跳过并提示
 ```
 
-交叉编译器可用 `make -C native darwin CC=o64-clang` 覆盖。Go 程序本身用标准
-命令交叉编译即可：
+各目标使用各自平台的工具链（ELF 的 `-Wl,-soname`、Mach-O 的
+`-install_name`、PE 的 `--out-implib` 互不通用），因此交叉编译器请按目标
+覆盖：`CC_LINUX` / `CC_DARWIN` / `CC_WINDOWS`，例如
+`make -C native darwin CC_DARWIN=o64-clang`；传统的 `CC=...`（命令行或环境
+变量）会同时作用于 linux 和 darwin 目标。Go 程序本身用标准命令交叉编译即可：
 
 ```sh
 GOOS=windows GOARCH=amd64 go build -o vdnoise.exe ./cmd/vdnoise

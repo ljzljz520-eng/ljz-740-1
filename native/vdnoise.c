@@ -191,7 +191,7 @@ VD_API int vd_process_f32(void *ctx, const float *in, float *out) {
 VD_API int vd_process_s16(void *ctx, const int16_t *in, int16_t *out) {
     /* GCC's alias analysis cannot prove fin/fout stay inside buf and emits a
        bogus -Wmaybe-uninitialized here. */
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
@@ -216,7 +216,7 @@ VD_API int vd_process_s16(void *ctx, const int16_t *in, int16_t *out) {
     free(buf);
     return rc;
 }
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 
