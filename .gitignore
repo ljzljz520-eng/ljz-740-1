@@ -23,3 +23,12 @@ __pycache__/
 *.log
 .env
 .env.*
+
+# Prebuilt RNNoise libraries (build them with ./third_party/build.sh)
+third_party/librnnoise.so
+third_party/librnnoise.dylib
+third_party/rnnoise.dll
+third_party/librnnoise.dll.a
+third_party/rnnoise/
+third_party/*.tar.gz
+bin/
